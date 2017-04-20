@@ -36,7 +36,13 @@ object fp2 {
   // Your implementation of "map" MUST be recursive.
   def map [A,B] (xs:List[A], f:A=>B) : List[B] = {
     // TODO: Provide definition here.
-    null
+	null
+	xs match{
+		case Nil => Nil
+		case y::ys =>{
+			f (y) :: map(ys, f)
+		}
+	}
   }
 
   // EXERCISE 2: complete the following recursive definition of a "filter" function
@@ -45,6 +51,11 @@ object fp2 {
   def filter [A] (xs:List[A], f:A=>Boolean) : List[A] = {
     // TODO: Provide definition here.
     null
+	xs match{
+		case Nil => Nil
+		case y::ys if f(y) => y :: filter(ys, f)
+		case _::ys => filter(ys, f)
+	}
   }
 
   // EXERCISE 3: complete the following recursive definition of an "append" function
@@ -54,6 +65,10 @@ object fp2 {
   def append [A] (xs:List[A], ys:List[A]) : List[A] = {
     // TODO: Provide definition here.
     null
+	xs match{
+		case Nil => ys
+		case z::zs => z::append(zs, ys)
+	}
   }
 
   // EXERCISE 4: complete the following recursive definition of a "flatten" function
@@ -64,7 +79,10 @@ object fp2 {
   // - flatten (List ((1 to 5).toList, (6 to 10).toList, (11 to 15).toList)) == (1 to 15).toList
   def flatten [A] (xss:List[List[A]]) : List[A] = {
     // TODO: Provide definition here.
-    null
+	xss match{
+		case Nil => Nil
+		case y::ys => y:::flatten(ys)
+	}
   }
 
   // EXERCISE 5: complete the following recursive definition of a "foldLeft" function
@@ -74,7 +92,10 @@ object fp2 {
   //         foldLeft (y::ys, e, f) == foldLeft (ys, f (e, y), f)
   def foldLeft [A,B] (xs:List[A], e:B, f:(B,A)=>B) : B = {
     // TODO: Provide definition here.
-    e
+	xs match{
+		case Nil => e
+		case y::ys => foldLeft(ys, f(e, y), f)
+	}
   }
 
   // EXERCISE 6: complete the following recursive definition of a "foldRight" function
@@ -84,7 +105,11 @@ object fp2 {
   //         foldRight (y::ys, e, f) == f (y, foldRight (ys, e, f))
   def foldRight [A,B] (xs:List[A], e:B, f:(A,B)=>B) : B = {
     // TODO: Provide definition here.
-    e
+	xs match{
+		case Nil => e
+		case y::ys => f(y, foldRight(ys, e, f))
+	}
+    
   }
 
   // EXERCISE 7: complete the following definition of a "joinTerminateLeft" function
@@ -95,7 +120,10 @@ object fp2 {
   // - joinTerminateLeft (List ("a","b","c","d"), ";") == "a;b;c;d;"
   def joinTerminateLeft (xs : List[String], term : String) : String = {
     // TODO: Provide definition here.
-    null
+	xs match{
+		case Nil => ""
+		case y::ys => y+foldLeft(ys, term, (a: String, b: String) => a + b + term)
+	}
   }
 
   // EXERCISE 8: complete the following definition of a "joinTerminateRight" function
@@ -106,7 +134,10 @@ object fp2 {
   // - joinTerminateRight (List ("a","b","c","d"), ";") == "a;b;c;d;"
   def joinTerminateRight (xs : List[String], delimiter : String) : String = {
     // TODO: Provide definition here.
-    null
+    xs match{
+		case Nil => ""
+		case y::ys => y+foldRight(ys, delimiter, (a: String, b: String) => delimiter+ a + b)
+	}
   }
 
   // EXERCISE 9: complete the following recursive definition of a "firstNumGreaterThan" function
@@ -117,7 +148,11 @@ object fp2 {
   // - firstNumGreaterThan (5, List (4, 6, 8, 5)) == 6
   def firstNumGreaterThan (a : Int, xs : List[Int]) : Int = {
     // TODO: Provide definition here.
-    -1
+    xs match{
+		case Nil => throw new RuntimeException () 
+		case y::ys if y >= a => y
+		case _::ys => firstNumGreaterThan(a, ys)
+	}
   }
   
   // EXERCISE 10: complete the following recursive definition of a "firstIndexNumGreaterThan" function
@@ -130,8 +165,20 @@ object fp2 {
   // HINT: this is a bit easier to write if you use an auxiliary function.
   def firstIndexNumGreaterThan (a : Int, xs : List[Int]) : Int = {
     // TODO: Provide definition here.
-    -1
+    xs match{
+		case Nil => throw new RuntimeException () 
+		case y::ys if y >= a => 0
+		case _::ys => firstIndexNumGreaterThanCount(1, a, ys)
+	}
   }
+  
+	def firstIndexNumGreaterThanCount( x : Int, a : Int, xs : List[Int]) : Int = {
+		xs match{
+			case Nil => throw new RuntimeException () 
+			case y::ys if y >= a => x
+			case _::ys => firstIndexNumGreaterThanCount(x+1, a, ys)
+		}
+	}
 
 }
 
