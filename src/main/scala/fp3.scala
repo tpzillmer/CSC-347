@@ -38,8 +38,11 @@ object fp3 {
   // - member (5, List (4, 6, 8, 5)) == true
   // - member (3, List (4, 6, 8, 5)) == false
   def member (a : Int, xs : List[Int]) : Boolean = {
-    // TODO: Provide definition here.
-    false
+    xs match{
+		case Nil => false
+		case y::ys if a == y => true
+		case _::ys => member(a, ys)
+	}
   }
 
   // EXERCISE 2: complete the following recursive definition of an "allEqual" function
@@ -53,7 +56,12 @@ object fp3 {
   // - allEqual (List (5, 5, 5, 6)) == false
   def allEqual (xs : List[Int]) : Boolean = {
     // TODO: Provide definition here.
-    false
+    xs match{
+		case Nil => true
+		case y::ys if ys == Nil => true
+		case y::ys if y != ys.head => false
+		case _::ys => allEqual(ys)
+	}
   }
 
   // EXERCISE 3: complete the definition of the following function that computes the length of
@@ -66,7 +74,10 @@ object fp3 {
   // of the List class.
   def stringLengths (xs:List[String]) : List[(String, Int)] = {
     // TODO: Provide definition here.
-    null
+    xs match{
+		case Nil => Nil
+		case y::ys => xs.map(y => (y, y.length()))
+	}
   }
 
   // EXERCISE 4: complete the function definition for "delete1" that takes
@@ -76,16 +87,19 @@ object fp3 {
   // EXAMPLE:
   // - delete1 ("the", List ("the","the","was","a","product","of","the","1980s")) == List ("was","a","product","of","1980s")
   def delete1 [X] (x:X, ys:List[X]) : List[X] = {
-    // TODO: Provide definition here.
-    null
+	ys match{
+		case Nil => List()
+		case z::zs if z != x => z::delete1(x, zs)
+		case _::zs => delete1(x, zs)
+	}
   }
 
   // EXERCISE 5: complete the function definition for "delete2" below.  It must 
   // have the same behavior as "delete1".  It must be written using "for comprehensions" 
   // and not use recursion explicitly.
   def delete2 [X] (x:X, ys:List[X]) : List[X] = {
-    // TODO: Provide definition here.
-    null
+	for(y <- ys; if(y != x))
+		yield y
   }
 
   // EXERCISE 6: complete the function definition for "delete3" below.  It must 
@@ -93,7 +107,7 @@ object fp3 {
   // builtin "filter" method for Lists and not use recursion explicitly.
   def delete3 [X] (x:X, ys:List[X]) : List[X] = {
     // TODO: Provide definition here.
-    null
+    ys.filter((z: X) => z != x)
   }
 
   // EXERCISE 7: complete the function definition for "removeDupes1" below.
@@ -105,7 +119,21 @@ object fp3 {
   // - removeDupes1 (List (1,1,2,3,3,3,4,4,5,6,7,7,8,9,2,2,2,9)) == List (1,2,3,4,5,6,7,8,9,2,9)
   def removeDupes1 [X] (xs:List[X]) : List[X] = {
     // TODO: Provide definition here.
-    null
+	xs match{
+		case Nil => List()
+		case List(y) => List(y)
+		case y::ys if y != ys.head => y::removeDupes1(ys)
+		case y::ys if !removeDupesAux(y, ys) => y::removeDupes1(ys)
+		case y::ys => removeDupes1(ys)
+	}
+  }
+  
+  def removeDupesAux [X] (x:X, xs : List[X]) : Boolean = {
+    xs match{
+		case Nil => false
+		case y::ys if x == y => true
+		case _::ys => removeDupesAux(x, ys)
+	}
   }
 
 
@@ -118,9 +146,8 @@ object fp3 {
   // - removeDupes2 (List (1,1,2,3,3,3,4,4,5,6,7,7,8,9,2,2,2,9)) == List ((2,1),(1,2),(3,3),(2,4),(1,5),(1,6),(2,7),(1,8),(1,9),(3,2),(1,9))
   def removeDupes2 [X] (xs:List[X]) : List[(Int, X)] = {
     // TODO: Provide definition here.
-    null
-  }
-
+		null
+	}
 
   // EXERCISE 9: complete the following definition of a function that splits a list
   // into a pair of two lists.  The offset for the the split position is given
@@ -137,9 +164,9 @@ object fp3 {
   // (because that would entail one traversal of the list with "take"
   // and then a second traversal with "drop").
   def splitAt [X] (n:Int, xs:List[X]) : (List[X], List[X]) = {
-    // TODO: Provide definition here.
-    null
+	null
   }
+  
 
   // EXERCISE 10: complete the following definition of an "allDistinct" function that checks
   // whether all values in list are distinct.  You should use your "member" function defined earlier.
@@ -151,7 +178,11 @@ object fp3 {
   // - allDistinct (List (1,2,3,2,4,5)) == false
   def allDistinct (xs : List[Int]) : Boolean = {
     // TODO: Provide definition here.
-    false
+    xs match{
+		case Nil => true
+		case y::ys if member(y, ys) => false
+		case y::ys => allDistinct(ys)
+	}
   }
 }
 
