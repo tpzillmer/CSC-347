@@ -146,8 +146,20 @@ object fp3 {
   // - removeDupes2 (List (1,1,2,3,3,3,4,4,5,6,7,7,8,9,2,2,2,9)) == List ((2,1),(1,2),(3,3),(2,4),(1,5),(1,6),(2,7),(1,8),(1,9),(3,2),(1,9))
   def removeDupes2 [X] (xs:List[X]) : List[(Int, X)] = {
     // TODO: Provide definition here.
-		null
+		xs match{
+			case Nil => List()
+			case y::ys => removeDupes2Aux(y, ys, 1)
+		}
 	}
+	
+  def removeDupes2Aux [X] (x : X, xs:List[X], count:Int) : List[(Int, X)] = {
+	xs match{
+		case Nil if(x != null) => List((count, x))
+		case Nil => List()
+		case y::ys if (y != x) => (count, x) :: removeDupes2Aux(y, ys, 1)
+		case y::ys => removeDupes2Aux(y, ys, count+1)
+  }
+  }
 
   // EXERCISE 9: complete the following definition of a function that splits a list
   // into a pair of two lists.  The offset for the the split position is given
