@@ -48,7 +48,15 @@ object argpass {
     // val r = new RefInt (0)
     // f (r)
     // val n : Int = r.get
-    (-1, -1, -1)
+	val r = new RefInt(0)
+	f (r)
+	val x : Int = r.get
+	f(r)
+	val y : Int = r.get
+	f(r)
+	val z : Int = r.get
+	
+    (x, y, z)
   }
 
   // EXERCISE 2: complete the following higher-order function.
@@ -60,15 +68,27 @@ object argpass {
   // Your code must return a tuple of the three integers provided by f in the order that they came back from calls, i.e., the integer from the first call to f is the first integer in the returned tuple.
   def refint2 (f : RefInt => Unit) : (Int, Int, Int) = {
     // TODO: Provide definition here.
-    (-1, -1, -1)
+	val a = new RefInt(0)
+	val b = new RefInt(0)
+	val c = new RefInt(0)
+	f(a)
+	f(b)
+	f(c)
+	val x : Int = a.get
+	val y : Int = b.get
+	val z : Int = c.get
+    (x, y, z)
   }
 
   // EXERCISE 3: complete the following function.
   // It has one parameter r: (a reference to) an instance of RefInt (see above for the definition of the class RefInt) and returns (a reference to) an instance of RefInt.
   // Your code must increment (add 1 to) the RefInt it receives and return double the original value (stored in a separate RefInt instance) as the result.
   def refint3 (r : RefInt) : RefInt = {
-    // TODO: Provide definition here.
-    null
+    // TODO: Provide definition here
+	val a : Int = r.get
+	r.set(a + 1)
+	val z = new RefInt(a*2)
+	z
   }
 
   // EXERCISE 4: complete the following function.
@@ -79,7 +99,15 @@ object argpass {
   // Your code should return true if f has NOT changed the Int stored in the copy of r.  Otherwise it should return false.
   def refint4 (r : RefInt, f : RefInt => Unit) : Boolean = {
     // TODO: Provide definition here.
-    false
+	val a : Int = r.get
+	val b = new RefInt(a)
+	f(b)
+	if(b.get == r.get){
+		true
+	}
+	else{
+		false
+	}
   }
 
   // EXERCISE 5: complete the following function.
@@ -89,6 +117,7 @@ object argpass {
   // You can assume that the list you receive is not empty.
   def refint5 (xs : List[RefInt]) : Unit = {
     // TODO: Provide definition here.
+	xs.head.set(0)
   }
 }
 
