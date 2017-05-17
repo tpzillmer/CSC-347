@@ -36,15 +36,19 @@ object storage {
   // EXERCISE 1: Complete the following definition, so that "constant5" is a function that returns 5
   // whenever it is invoked.
   val constant5 : () => Int = {
-    // TODO: Complete the definition.
-    null
+    def constant5 () : Int = {
+		5
+	}
+	constant5
   }
 
   // EXERCISE 2: Complete the following definition, so that "constant" is a function that when
   // invoked with integer n returns a function that returns n whenever it is invoked.
   val constant : Int => () => Int = {
-    // TODO: Complete the definition.
-    null
+    def constant(n : Int) = () => {
+		n
+	}
+	constant
   }
 
   // EXERCISE 3: Complete the following definition, so that "counter0" is a (stateful) function that
@@ -52,8 +56,12 @@ object storage {
   // REMEMBER: you can use "var" but everything you add has to be inside the "{...}" body of "counter0".
   // This rule applies throughout this assignment.
   val counter0 : () => Int = {
-    // TODO: Complete the definition.
-    null
+    var x : Int = -1
+    def counter0 () : Int = {
+		x += 1
+		x
+	}
+	counter0
   }
 
   // EXERCISE 4: Complete the following definition, so that "counter" is a (stateless) function that
@@ -61,8 +69,14 @@ object storage {
   // invoked, then n+1, then n+2, etc.  The counters must be independent, i.e., running "counter (0)" 
   // twice should yield two functions that do not interfere with one another's state.
   val counter : Int => () => Int = {
-    // TODO: Complete the definition.
-    null
+    def counter(n : Int) ={
+		var x = n - 1 
+		() => {
+			x += 1
+			x
+		}
+	}
+	counter
   }
 
   // EXERCISE 5: Complete the following definition, so that "getAndSet" is a (stateless) function
@@ -73,8 +87,11 @@ object storage {
   // Multiple calls to "getAndSet" should yield independent pairs, i.e., the first pair returned 
   // should not share any state with the second pair returned.
   val getAndSet : Int => (() => Int, Int => Unit) = {
-    // TODO: Complete the definition.
-    null
+	def getAndSet(q : Int) = {
+		var n : Int = q
+		(()=> n, (m:Int) => {n = m})
+	}
+	getAndSet
   }
 
   // EXERCISE 6: Complete the following definition, so that "getAndSetSpy" is a (stateful) function
@@ -84,9 +101,13 @@ object storage {
   // That number should cover all calls to "set" made in all pairs created via "getAndSetSpy".  That is, 
   // the total number is a piece of state shared all "set" functions created via "getAndSetSpy".
   val getAndSetSpy : () => (() => Int, Int => (() => Int, Int => Unit)) = {
-    // TODO: Complete the definition.
-    null
-  }
-
+	  
+	var setCount : Int = 0
+	def getAndSetSpy() = {
+		(() => {setCount}, (q : Int) => {var n : Int = q; (()=> n, (m:Int) => {n = m; setCount += 1})})
+		}
+	
+	getAndSetSpy
+	}
 }
 
