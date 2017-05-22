@@ -47,7 +47,7 @@ object subtyping {
   // observeCounter should call f, and then return the total number of times that increment/decrement were called on the instance by f.
   def observeCounter (f : Counter => Unit) : Int = {
     class Count extends Counter {
-		var x = 0
+		private var x = 0
 		private var n = 0
 		override def increment () = { 
 			n = n + 1
@@ -74,7 +74,7 @@ object subtyping {
   // The first element of the result List[Int] must correspond to the number of times that increment/decrement were called on the first element of type List[Counter], similarly for the second and third elements.
   def observeCounterList (f : List[Counter] => Unit) : List[Int] = {
 	class Count extends Counter {
-		var x = 0
+		private var x = 0
 		private var n = 0
 		override def increment () = { 
 			n = n + 1
@@ -104,7 +104,7 @@ object subtyping {
   // The first element of the result Array[Int] must correspond to the number of times that increment/decrement were called on the first element of type Array[Counter], similarly for the second and third elements.
   def observeCounterArray (f : Array[Counter] => Unit) : Array[Int] = {
  	class Count extends Counter {
-		var x = 0
+		private var x = 0
 		private var n = 0
 		override def increment () = { 
 			n = n + 1
