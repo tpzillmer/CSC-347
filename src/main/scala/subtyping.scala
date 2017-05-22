@@ -46,8 +46,25 @@ object subtyping {
   // I.e., if the increment method is called 3 times on an instance, and the decrement method is called 2 times on the same instance, then it should store 5  (somewhere other than the existing field n).
   // observeCounter should call f, and then return the total number of times that increment/decrement were called on the instance by f.
   def observeCounter (f : Counter => Unit) : Int = {
-    // TODO: Provide definition here.
-    -1
+    class Count extends Counter {
+		var x = 0
+		private var n = 0
+		override def increment () = { 
+			n = n + 1
+			x = x + 1
+		}
+		override def decrement () = { 
+			n = n - 1
+			x = x + 1
+		}
+		override def get () : Int = {
+			x
+		}
+	}
+	val y = new Count
+	f(y)
+	val a : Int = y.get
+	a
   }
 
   // EXERCISE 2: complete the following function.
@@ -56,8 +73,28 @@ object subtyping {
   // You must return a List[Int] not an Int.
   // The first element of the result List[Int] must correspond to the number of times that increment/decrement were called on the first element of type List[Counter], similarly for the second and third elements.
   def observeCounterList (f : List[Counter] => Unit) : List[Int] = {
-    // TODO: Provide definition here.
-    List (-1, -1, -1)
+	class Count extends Counter {
+		var x = 0
+		private var n = 0
+		override def increment () = { 
+			n = n + 1
+			x = x + 1
+		}
+		override def decrement () = { 
+			n = n - 1
+			x = x + 1
+		}
+		override def get () : Int = {
+			x
+		}
+	}
+	val x = new Count
+	val y = new Count
+	val z = new Count
+    val countList = List (x, y, z)
+	f(countList)
+	val a = List(x.get, y.get, z.get)
+	a
   }
 
   // EXERCISE 3: complete the following function.
@@ -66,8 +103,28 @@ object subtyping {
   // You must return a Array[Int] not a List[Int].
   // The first element of the result Array[Int] must correspond to the number of times that increment/decrement were called on the first element of type Array[Counter], similarly for the second and third elements.
   def observeCounterArray (f : Array[Counter] => Unit) : Array[Int] = {
-    // TODO: Provide definition here.
-    List (-1, -1, -1).toArray
+ 	class Count extends Counter {
+		var x = 0
+		private var n = 0
+		override def increment () = { 
+			n = n + 1
+			x = x + 1
+		}
+		override def decrement () = { 
+			n = n - 1
+			x = x + 1
+		}
+		override def get () : Int = {
+			x
+		}
+	}
+	val x = new Count
+	val y = new Count
+	val z = new Count
+	val countArray:Array[Counter] = Array (x, y, z)
+	f(countArray)
+	val a = Array (x.get, y.get, z.get)
+	a
   }
 }
 
