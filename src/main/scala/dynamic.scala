@@ -41,8 +41,7 @@ object dynamic {
   // - name : a String
   // You should use the "greet" method of "i18n" to find a greeting for "name".  Return the result.
   def useGreet (i18n : Internationalization, name : String) : String = {
-    // TODO: Provide definition here.
-    null
+	i18n.greet(name)
   }
 
   // EXERCISE 2: complete the following function.
@@ -50,8 +49,13 @@ object dynamic {
   // The "greet" method should return a String consisting of "Hello", a space, and the name given as an argument.
   // You can either define classes inside the newEnglish method or directly inside the "dynamic" object.
   def newEnglish () : Internationalization = {
-    // TODO: Provide definition here.
-    null
+    class Extension extends Internationalization {
+		override def greet(name : String) : String = {
+			"Hello "+name
+		}
+	}
+	val x = new Extension
+	x
   }
 
   // EXERCISE 3: complete the following function.
@@ -59,8 +63,13 @@ object dynamic {
   // The "greet" method should return a String consisting of "Bonjour", a space, and the name given as an argument.
   // You can either define classes inside the newFrench method or directly inside the "dynamic" object.
   def newFrench () : Internationalization = {
-    // TODO: Provide definition here.
-    null
+    class Extension extends Internationalization {
+		override def greet(name : String) : String = {
+			"Bonjour "+name
+		}
+	}
+	val x = new Extension
+	x
   }
 }
 
